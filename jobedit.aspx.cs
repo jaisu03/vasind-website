@@ -14,7 +14,8 @@ public partial class jobedit : System.Web.UI.Page
     
     protected void Page_Load(object sender, EventArgs e)
     {
-        sqljobs.SelectCommand = "SELECT [Id], [Name], [abstract], [experience], [expires], [img],[Category] FROM [job]";
+        Session["login"] = "Suraj";
+        sqljobs.SelectCommand = "SELECT [Id], [Name], [abstract], [experience], [expires], [img],[Category] FROM [job] where users='"+Session["login"].ToString()+"'";
 
     }
     protected void ListView2_SelectedIndexChanged(object sender, EventArgs e)
@@ -44,7 +45,6 @@ public partial class jobedit : System.Web.UI.Page
           cmd.Parameters.AddWithValue("@exp",txtexp.Text);
           cmd.Parameters.AddWithValue("@img","img/"+imgname);
           cmd.Parameters.AddWithValue("@category",txtcat.Text);
-          Response.Write("<script>alert('Updated')</script>");
       }
       else
       {
@@ -54,11 +54,15 @@ public partial class jobedit : System.Web.UI.Page
           cmd.Parameters.AddWithValue("@des",txtdes.Text);
           cmd.Parameters.AddWithValue("@exp",txtexp.Text);
           cmd.Parameters.AddWithValue("@category", txtcat.Text);
-          Response.Write("<script>alert('Updated')</script>");
-            
+                     
       }
       c.Open();
-      cmd.ExecuteNonQuery();
+      int check = Convert.ToInt32(cmd.ExecuteNonQuery());
+      if (check > 0)
+          Response.Write("<script>alert('Job Updated')</script>");
+      else
+          Response.Write("<script>alert('Please try again!')</script>");
+
       c.Close();
                 //[Name], [abstract], [experience], [expires], [img]
 
@@ -73,7 +77,7 @@ public partial class jobedit : System.Web.UI.Page
     //Label lblid = (Label)e.Item.FindControl("lblid");
         LinkButton hypcat = (LinkButton)e.Item.FindControl("hypcat");
       //  Response.Write("<script>alert('" + hypcat.Text + "')</script>");
-        sqljobs.SelectCommand = "SELECT [Id], [Name], [abstract], [experience], [expires], [img],[Category] FROM [job] where [category]='"+hypcat.Text+"'";
+        sqljobs.SelectCommand = "SELECT [Id], [Name], [abstract], [experience], [expires], [img],[Category] FROM [job] where [category]='"+hypcat.Text+"' and users='"+Session["login"].ToString()+"'";
         ListView2.DataBind();
     }
     protected void btnsearch_Click(object sender, EventArgs e)
@@ -81,7 +85,7 @@ public partial class jobedit : System.Web.UI.Page
         int val;
         if (int.TryParse(txtsearch.Text, out val))
         {
-            sqljobs.SelectCommand = "SELECT [Id], [Name], [abstract], [experience], [expires], [img],[Category] FROM [job] where [id]='" + txtsearch.Text + "'";
+            sqljobs.SelectCommand = "SELECT [Id], [Name], [abstract], [experience], [expires], [img],[Category] FROM [job] where [id]='" + txtsearch.Text + "' and users='" + Session["login"].ToString() + "'";
             ListView2.DataBind();
         }else
             Response.Write("<script>alert('Id not found')</script>");
@@ -92,7 +96,7 @@ public partial class jobedit : System.Web.UI.Page
     protected void btnrefresh_Click(object sender, EventArgs e)
     {
         txtsearch.Text="";
-        sqljobs.SelectCommand = "SELECT [Id], [Name], [abstract], [experience], [expires], [img],[Category] FROM [job]";
+        sqljobs.SelectCommand = "SELECT [Id], [Name], [abstract], [experience], [expires], [img],[Category] FROM [job] where users='" + Session["login"].ToString() + "'";
         ListView2.DataBind();
         
     }

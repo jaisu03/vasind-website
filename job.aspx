@@ -14,12 +14,7 @@
             width: 500px;
             background-color: White;
         }
- 
-        #dialogContents {
-               background: white;
-               border: 2px solid black;
-                   padding: 0 5%;
-        }
+       
  
         .modalBackground {
              background-color:Gray;
@@ -41,8 +36,9 @@
 						<div class="12u$ 12u$(medium) ">
 						<ul class="actions pull-right">
 								
-								<li><asp:Button ID="btnShow" Text="Post your Job" runat="server" CssClass="button icon fa-download" /></li>
-								<li><a href="#" class="button icon fa-download ">Edit your Job</a></li>
+								<li><asp:Button ID="btnShow" Text="Post your Job" runat="server" 
+                                        CssClass="button icon fa-download" /></li>
+								<li><a href="jobedit.aspx" class="button icon fa-download ">Edit your Job</a></li>
 							</ul>
                             <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
                              <asp:Panel ID="dialog" runat="server">
@@ -60,6 +56,7 @@
     </td>
     <td>
     <asp:TextBox ID="txttitle" runat="server" Font-Size="14px" CssClass="textbox" ></asp:TextBox>
+    <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Job title required" ControlToValidate="txttitle" ValidationGroup="post"></asp:RequiredFieldValidator>
     </td>
     </tr>
     <tr>
@@ -68,28 +65,34 @@
     </td>
     <td>
     <asp:TextBox ID="txtcategory" runat="server" Font-Size="14px" CssClass="textbox"></asp:TextBox>
+      <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ErrorMessage="category required" ControlToValidate="txtcategory" ValidationGroup="post"></asp:RequiredFieldValidator>
     </td>
     </tr>
     <tr>
     <td colspan=2>
     <asp:Label ID="Label3" runat="server" CssClass="lbl" Text="Description"></asp:Label>
-    <p></p>
-    
+    <p></p>    
     <asp:TextBox ID="txtdes" runat="server" Font-Size="14px" width="100%" Height="100px" CssClass="textbox"></asp:TextBox>
+    <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ErrorMessage="Description required" ControlToValidate="txtdes" ValidationGroup="post"></asp:RequiredFieldValidator>
     </td>
     </tr>
     
     <tr>
     <td>
-    <asp:Label ID="Label5" runat="server" CssClass="lbl" Text="Required Experience"></asp:Label>
+    <asp:Label ID="Label5" runat="server" CssClass="lbl" Text="Experience"></asp:Label>
     </td>
     <td>
     <asp:TextBox ID="txtexp" runat="server" Font-Size="14px" CssClass="textbox"></asp:TextBox>
+    <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ErrorMessage="Experience required" ControlToValidate="txtexp" ValidationGroup="post"></asp:RequiredFieldValidator>
     </td>
     </tr>
     <tr>
+    <td><asp:Label ID="Label6" runat="server" CssClass="lbl" Text="Select Image"></asp:Label></td>
+    <td><asp:FileUpload ID="fileimg" runat="server"></asp:FileUpload></td>
+    </tr>
+    <tr>
     <td><asp:Button ID="btnOK" Text="Back" runat="server" /></td>
-    <td><asp:Button ID="btnpost" Text="Post" runat="server" onclick="btnpost_Click" /></td>    
+    <td><asp:Button ID="btnpost" Text="Post" runat="server" onclick="btnpost_Click" ValidationGroup="post" /></td>    
     </tr>
         </table>
             
@@ -131,7 +134,9 @@
 									</tr>
 									
 									<tr>
-											<td><b><a href="job.aspx">All Jobs</a></b>
+											<td class="fixedtop">
+                                            <div>
+                                            <b><a href="job.aspx">All Jobs</a></b>
                                             <p></p>
                                               <asp:ListView ID="listcat" runat="server" DataSourceID="jobcategory" OnItemCommand="onlistcat" 
                                                  >
@@ -154,8 +159,8 @@
           </asp:ListView> 
 
   <asp:SqlDataSource ID="jobcategory" runat="server" ConnectionString="<%$ ConnectionStrings:Loveservices %>" 
-                                                    SelectCommand="SELECT [category] FROM [job]"></asp:SqlDataSource>
-                                            
+                                                    SelectCommand="SELECT distinct [category] FROM [job]"></asp:SqlDataSource>
+                                            </div>
                                             </td>
 											<td>											
 										   <asp:ListView ID="ListView2" runat="server" DataKeyNames="ID" DataSourceID="sqljobs">
@@ -184,7 +189,7 @@
                        <span>
                          <b>Description: </b><%# Eval("abstract")%>
                        </span>
-                       <br />
+                      <p></p>
                        <span>
                          <b>Experience: </b><%# Eval("experience")%>
                        </span>

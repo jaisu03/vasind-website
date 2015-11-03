@@ -34,7 +34,13 @@ textbox{width:30%;}
 .divcenter{margin:0 auto;}
 .textbox{background:rgba(166, 166, 166, 0.61) !important}
 .lbl{}
-td{vertical-align: middle;}
+#dialogContents table tr > td{vertical-align: middle;}
+  #dialogContents {
+               background: white;
+               border: 2px solid black;
+             
+        }
+.fixedtop{vertical-align:top;}
 /* Basic */
 
 	body {

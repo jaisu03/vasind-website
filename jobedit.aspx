@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/headfooteredit.master" AutoEventWireup="true" CodeFile="jobedit.aspx.cs" Inherits="jobedit" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/headfooter.master" AutoEventWireup="true" CodeFile="jobedit.aspx.cs" Inherits="jobedit" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
 
@@ -36,7 +36,7 @@
 									</tr>
 									
 									<tr>
-											<td style="text-align:center;">
+											<td style="text-align:center;" class="fixedtop">
                                                 <asp:ListView ID="listcat" runat="server" DataSourceID="jobcategory" OnItemCommand="onlistcat" 
                                                     onselectedindexchanged="ListView1_SelectedIndexChanged">
                                                      <EmptyDataTemplate>
@@ -58,7 +58,7 @@
           </asp:ListView> 
 
   <asp:SqlDataSource ID="jobcategory" runat="server" ConnectionString="<%$ ConnectionStrings:Loveservices %>" 
-                                                    SelectCommand="SELECT [category] FROM [job]"></asp:SqlDataSource>
+                                                    SelectCommand="SELECT Distinct [category] FROM [job]"></asp:SqlDataSource>
                                             </td>
 											<td>											
 										   <asp:ListView ID="ListView2" runat="server" DataKeyNames="ID" DataSourceID="sqljobs" 
